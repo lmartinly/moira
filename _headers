@@ -1,0 +1,25 @@
+# Cloudflare Pages ve Netlify bu dosyayı okur (ikisinde de söz dizimi aynıdır). Başka sunucularda yok sayılır; uygulama bu dosya olmadan da çalışır.
+# Amaç: (1) uygulamanın yalnızca kendi kaynağından kod ve veri yüklemesini tarayıcı düzeyinde zorunlu kılmak (connect-src 'self': kişisel kayıtlar başka
+# bir adrese gönderilemez), (2) service worker ve giriş sayfasının bayat önbellekten gelmemesi, (3) içerik özetli dosyaların kalıcı önbelleğe alınması.
+/*
+  X-Content-Type-Options: nosniff
+  X-Robots-Tag: noindex, nofollow
+  Referrer-Policy: no-referrer
+  X-Frame-Options: DENY
+  Permissions-Policy: geolocation=(), camera=(), microphone=(), payment=(), usb=(), bluetooth=()
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self'; worker-src 'self' blob:; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'; frame-ancestors 'none'
+
+/
+  Cache-Control: no-cache
+
+/index.html
+  Cache-Control: no-cache
+
+/sw.js
+  Cache-Control: no-cache
+
+/manifest.webmanifest
+  Cache-Control: no-cache
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
